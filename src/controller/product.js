@@ -58,10 +58,22 @@ async function deleteProduntById(req, res) {
     console.log(res.json({message: "error you"}));
   }
 }
+const updateProduct = async(req, res)=>{
+  const newProdcuct = req.body
+  const {id} = req.params 
+  try {
+    const response = await Product.findByIdAndUpdate(id, newProdcuct, {new: true})
+    res.status(200).json(response)
+  } catch (error) {
+    res.status(500).json(error)
+  }
+}
+
 
 module.exports = {
   addNewBlog,
   getAllProduct,
   getSingleProduct,
   deleteProduntById,
+  updateProduct
 };

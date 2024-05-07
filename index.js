@@ -5,9 +5,10 @@ const morgan = require("morgan");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const userRoute = require("./src/router/user");
-const blogRoute = require("./src/router/blog")
-const productRoute = require("./src/router/product")
-const cartRoute = require("./src/router/cart")
+const blogRoute = require("./src/router/blog");
+const productRoute = require("./src/router/product");
+const cartRoute = require("./src/router/cart");
+const authRoute = require("./src/router/auth");
 const ImageUploadRoute = require("./src/router/imageUPload");
 // console.log("hcjajvcibdsabvksadvkbsakvca");
 
@@ -16,9 +17,10 @@ app.use(express.json());
 app.use(cors());
 app.use(userRoute);
 app.use(blogRoute);
-app.use( productRoute);
-app.use(cartRoute)
-app.use("/api/v1", ImageUploadRoute)
+app.use(productRoute);
+app.use(cartRoute);
+app.use("/api/v1", ImageUploadRoute);
+app.use("/api/v1/auth", authRoute);
 const mongoApiConnet = process.env.mongoURL;
 
 let port = 4001;
