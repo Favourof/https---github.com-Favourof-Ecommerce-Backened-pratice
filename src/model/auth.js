@@ -50,4 +50,3 @@ const UserSchema = Schema({
 });
 
 module.exports = mongoose.model("User", UserSchema);
-                         

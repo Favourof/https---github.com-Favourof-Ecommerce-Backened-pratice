@@ -31,7 +31,7 @@ async function handleSignUp(req, res) {
     res.status(200).json(response);
     console.log(response);
   } catch (error) {
-    res.status(500).json({ error: "error creating data", error });
+    res.status(500).json({ error:"error creating data", error });
     console.log(error);
   }
 }
@@ -70,7 +70,7 @@ async function handleLogIn(req, res) {
 
 const handleCheckAuth = async (req, res) => {
   console.log("hello");
-  const user = await User.findOne(req.user);
+  const user = await User.findById(req.user);
   if (!user) {
     return res.status(404).json({ message: "user not found" });
   }

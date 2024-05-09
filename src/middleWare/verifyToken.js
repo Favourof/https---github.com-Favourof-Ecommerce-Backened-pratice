@@ -9,7 +9,7 @@ const verifyToken = async (req, res, next) => {
 
     jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
       if (err) return res.status(404).json("your token expire pls login");
-      req.user = decoded.email;
+      req.user = decoded.id;
       console.log(decoded);
       next();
     });
