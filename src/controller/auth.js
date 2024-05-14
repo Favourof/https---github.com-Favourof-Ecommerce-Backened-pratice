@@ -1,6 +1,7 @@
 const User = require("../model/auth");
+const Otpmodel = require("../model/otp");
 const { UserZodSchema } = require("../utils/ZodSchema");
-const { sendWelcomeEmail } = require("../mailer/mail");
+const { sendWelcomeEmail, sendVerificationCode } = require("../mailer/mail");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
@@ -27,11 +28,13 @@ async function handleSignUp(req, res) {
 
     const response = await User.create(validatedData);
     const name = firstName + " " + lastName;
-    await sendWelcomeEmail({ name, email });
-    res.status(200).json(response);
-    console.log(response);
+    // await sendWelcomeEmail({ name, email });
+    res.status(200).json(validatedData);
+    console.log(validatedData);
+
+    handleSendOtpVerification({ email });
   } catch (error) {
-    res.status(500).json({ error:"error creating data", error });
+    res.status(500).json({ error: "error creating data", error });
     console.log(error);
   }
 }
@@ -75,6 +78,27 @@ const handleCheckAuth = async (req, res) => {
     return res.status(404).json({ message: "user not found" });
   }
   res.status(200).json(user);
+};
+
+const handleSendOtpVerification = async ({ res, email }) => {
+  try {
+    console.log(email);
+    let otp = `${Math.floor(1000 + Math.random() * 9000)}`;
+    const salt = await bcrypt.genSalt();
+    let otps = await bcrypt.hash(otp, salt);
+    const response = await Otpmodel.create({
+      email,
+      createdAt: Date.now(),
+      expiresAt: Date.now(),
+      otps,
+    });
+    await sendVerificationCode({ email, otp });
+    // res.json(response);
+    console.log(response);
+  } catch (error) {
+    // res.json({ message: "error ggg", error });
+    console.log(error);
+  }
 };
 module.exports = { handleSignUp, handleLogIn, handleCheckAuth };
 

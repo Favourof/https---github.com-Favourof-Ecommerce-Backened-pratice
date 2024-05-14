@@ -7,7 +7,7 @@ const {
 const { verifyToken } = require("../middleWare/verifyToken");
 const route = express.Router();
 
-route.post("/signupuser", handleSignUp);
+route.post("/signupuser",  handleSignUp);
 route.post("/loginuser", handleLogIn);
 route.post("/checkauth", verifyToken, handleCheckAuth);
 
